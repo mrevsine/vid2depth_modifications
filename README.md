@@ -1,7 +1,14 @@
 # vid2depth_modifications
 Modified version of tensorflow's vid2depth software. Updated to (hopefully) run without bugs
 
-Usage:
+TRAINING:
+
+a) Use the included model pre-trained on KITTI and Cityscapes data. This option requires no further action.
+
+b) Train your own model
+    This is more work. 
+
+USAGE:
 
 To get depth maps from images:
 
