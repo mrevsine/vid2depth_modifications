@@ -21,4 +21,4 @@ python3 inference.py \
     --kitti_dir /kitti-raw-uncompressed \
     --output_dir /out/PNG_out \
     --kitti_video /PNGs \
-    --model_ckpt trained-model/model-119496/model-119496
+    --model_ckpt trained-model/model_model-119496/model-119496
