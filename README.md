@@ -1,12 +1,43 @@
 # vid2depth_modifications
 Modified version of tensorflow's vid2depth software. Updated to (hopefully) run without bugs
 
+DEPENDENCIES:
+
+pip install absl-py
+pip install matplotlib
+pip install numpy
+pip install scipy
+pip install tensorflow
+
+Specifications (these worked but others might work as well):
+Python       3.5
+absl-py      0.7.1
+matplotlib   3.0.3	
+numpy        1.16.4
+scipy        1.1.0
+tensorflow   1.5.0
+
+
 TRAINING:
 
 a) Use the included model pre-trained on KITTI and Cityscapes data. This option requires no further action.
 
 b) Train your own model:
     This is more work. 
+    
+Format training data:
+
+Create folder kitti-raw-uncompressed in /vid2depth/
+Move all raw input data into /vid2depth/kitti-raw-uncompressed
+To correctly format your input data:
+
+cd path/to/vid2depth \
+python3 dataset/gen_data.py \
+  --dataset_name kitti_raw_eigen \
+  --dataset_dir kitti-raw-uncompressed \
+  --data_dir data/kitti_raw_eigen \
+  --seq_length 3
+
 
 USAGE:
 
