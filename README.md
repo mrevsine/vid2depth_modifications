@@ -1,6 +1,8 @@
 # vid2depth_modifications
 Modified version of tensorflow's vid2depth software. Updated to (hopefully) run without bugs
 
+ORIGINAL: https://github.com/tensorflow/models/tree/master/research/vid2depth
+
 DEPENDENCIES:
 
 pip install absl-py
@@ -27,7 +29,7 @@ b) Train your own model:
     
 Format training data:
 
-Create folder kitti-raw-uncompressed in /vid2depth/
+Create folder kitti-raw-uncompressed in /vid2depth/\n
 Move all raw input data into /vid2depth/kitti-raw-uncompressed
 To correctly format your input data:
 
