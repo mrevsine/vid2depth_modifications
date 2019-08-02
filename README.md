@@ -5,11 +5,11 @@ ORIGINAL: https://github.com/tensorflow/models/tree/master/research/vid2depth
 
 DEPENDENCIES:
 
-pip install absl-py
-pip install matplotlib
-pip install numpy
-pip install scipy
-pip install tensorflow
+pip install absl-py  
+pip install matplotlib  
+pip install numpy  
+pip install scipy  
+pip install tensorflow  
 
 Specifications (these worked but others might work as well):
 Python       3.5
