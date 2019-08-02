@@ -29,7 +29,7 @@ b) Train your own model:
     
 Format training data:
 
-Create folder kitti-raw-uncompressed in /vid2depth/\n
+Create folder kitti-raw-uncompressed in /vid2depth/
 Move all raw input data into /vid2depth/kitti-raw-uncompressed
 To correctly format your input data:
 
