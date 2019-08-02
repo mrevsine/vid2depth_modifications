@@ -12,12 +12,12 @@ pip install scipy
 pip install tensorflow  
 
 Specifications (these worked but others might work as well):
-Python       3.5  
-absl-py      0.7.1  
-matplotlib   3.0.3  
-numpy        1.16.4  
-scipy        1.1.0  
-tensorflow   1.5.0  
+Python        3.5  
+absl-py       0.7.1  
+matplotlib    3.0.3  
+numpy         1.16.4  
+scipy         1.1.0  
+tensorflow    1.5.0  
 
 
 TRAINING:
