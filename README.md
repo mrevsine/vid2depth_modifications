@@ -1,5 +1,6 @@
 # vid2depth_modifications
-Modified version of tensorflow's vid2depth software. Updated to (hopefully) run without bugs.
+Modified version of tensorflow's vid2depth software. Updated to (hopefully) run without bugs.  
+All modified code is in the vid2depth folder.
 
 ORIGINAL: https://github.com/tensorflow/models/tree/master/research/vid2depth
 
