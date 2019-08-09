@@ -32,6 +32,53 @@ Format training data:
 
 Create folder kitti-raw-uncompressed in /vid2depth  
 Move all raw input data into /vid2depth/kitti-raw-uncompressed  
+
+The data structure should appear as follows:  
+kitti-raw-uncompressed  
+	| --- video_0  // these video names should all be in dataset_loader  KittiRaw.date_list  
+	| --- video_1  
+	…  
+	| ---video_n  
+        | --- calib_cam_to_cam.txt  
+		| --- subfolder_0  
+		| --- subfolder_1  // optional subdivisions of video n  
+		…  
+		| --- subfolder_n   
+            | --- image_00  // the number after the underscore should be the same as in   
+		                       dataset_loader ---> KittiRaw.cam_ids  
+	            | --- data  
+		            | --- all images in this folder  
+
+calib_cam_to_cam.txt contains the camera intrinsics for the given video 
+From the original code:  
+"calib_cam_to_cam.txt: Camera-to-camera calibration  
+--------------------------------------------------  
+
+  - S_xx: 1x2 size of image xx before rectification  
+  - K_xx: 3x3 calibration matrix of camera xx before rectification  
+  - D_xx: 1x5 distortion vector of camera xx before rectification  
+  - R_xx: 3x3 rotation matrix of camera xx (extrinsic)  
+  - T_xx: 3x1 translation vector of camera xx (extrinsic)  
+  - S_rect_xx: 1x2 size of image xx after rectification  
+  - R_rect_xx: 3x3 rectifying rotation to make image planes co-planar  
+  - P_rect_xx: 3x4 projection matrix after rectification  
+
+Note: When using this dataset you will most likely need to access only  
+P_rect_xx, as this matrix is valid for the rectified image sequences."
+
+Example calib_cam_to_cam.txt:  
+
+calib_time: 09-Jan-2012 13:57:47  
+corner_dist: 9.950000e-02  
+S_00: 1.392000e+03 5.120000e+02  
+K_00: 9.842439e+02 0.000000e+00 6.900000e+02 0.000000e+00 9.808141e+02 2.331966e+02 0.000000e+00 0.000000e+00 1.000000e+00  
+D_00: -3.728755e-01 2.037299e-01 2.219027e-03 1.383707e-03 -7.233722e-02  
+R_00: 1.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.000000e+00  
+T_00: 2.573699e-16 -1.059758e-16 1.614870e-16  
+S_rect_00: 1.242000e+03 3.750000e+02  
+R_rect_00: 9.999239e-01 9.837760e-03 -7.445048e-03 -9.869795e-03 9.999421e-01 -4.278459e-03 7.402527e-03 4.351614e-03 9.999631e-01  
+P_rect_00: 7.215377e+02 0.000000e+00 6.095593e+02 0.000000e+00 0.000000e+00 7.215377e+02 1.728540e+02 0.000000e+00   0.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00  
+  
 Run the following command
 
 cd path/to/vid2depth    
