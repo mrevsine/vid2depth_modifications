@@ -46,7 +46,7 @@ USAGE:
 
 To get depth maps from images:
 
-cd path/to/vid2depth
+cd path/to/vid2depth  
 python3 inference.py \
     --kitti_dir /first/half/of/path/to/image/directory \
     --output_dir /path/to/where/you/want/outputs/stored \
