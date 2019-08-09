@@ -25,7 +25,13 @@ tensorflow    1.5.0
 
 ### TRAINING:
 
-a) Use the included model pre-trained on KITTI and Cityscapes data. This option requires no further action.
+a) Use the included model pre-trained on KITTI and Cityscapes data. 
+
+### Download the trained model:
+
+Go to https://storage.cloud.google.com/vid2depth/model/model-119496.zip  
+This will immediately begin the download.  
+Create folder called /trained-model in your vid2depth directory and unzip this file in there.
 
 b) Train your own model:
     This is more work. 
