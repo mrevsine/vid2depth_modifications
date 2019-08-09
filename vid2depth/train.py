@@ -144,7 +144,7 @@ def train(train_model, pretrained_ckpt, checkpoint_dir, train_steps,
       if step % summary_freq == 0:
         fetches['loss'] = train_model.total_loss
         fetches['summary'] = sv.summary_op
-
+      print(str(step))
       results = sess.run(fetches)
       global_step = results['global_step']
 

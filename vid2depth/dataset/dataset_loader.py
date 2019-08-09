@@ -40,8 +40,8 @@ class Custom(object):
   def __init__(self,
                dataset_dir,
                img_height,
-               img_width
-               seq_length=3
+               img_width,
+               seq_length=3,
                sample_every=1):
     self.dataset_dir = dataset_dir
     self.img_height = img_height
@@ -54,8 +54,15 @@ class Custom(object):
     logging.info('Total frames collected: %d', self.num_frames)
 
   def collect_frames(self):
-    im_files = glob.glob(os.path.join(dataset_dir, '*.JPG'))
-    frames = [f for f in im_files]
+    extensions = ('*.jpg', '*.JPG', '*.jpeg', '*.png')
+    frames = []
+    for file in extensions:
+        dirs = os.listdir(self.dataset_dir)
+        for dir in dirs:
+#            frames.extend(glob.glob(os.path.join(self.dataset_dir, dir, file)).split('/')[1:])
+          valid_frames = glob.glob(os.path.join(self.dataset_dir, dir, file))
+          valid_frames = ['/'.join(vf.split('/')[1:]) for vf in valid_frames]
+          frames.extend(valid_frames)
     return frames
 
   def get_example_with_index(self, target_index):
@@ -65,7 +72,7 @@ class Custom(object):
     return example
 
   def load_intrinsics(self):
-  """Load intrinsics."""
+    # Load intrinsics
     # https://www.wired.com/2013/05/calculating-the-angular-view-of-an-iphone/
     # https://codeyarns.com/2015/09/08/how-to-compute-intrinsic-camera-matrix-for-a-camera/
     # https://stackoverflow.com/questions/39992968/how-to-calculate-field-of-view-of-the-camera-from-camera-intrinsic-matrix
@@ -76,25 +83,53 @@ class Custom(object):
                            [0, 0, 1.0]])
     return intrinsics
 
-  def is_valid_sample(self):
-  """Checks whether we can find a valid sequence around this frame."""
-    target_video, _ = self.frames[target_index]
+  def is_valid_sample(self, target_index):
+    # Checks whether we can find a valid sequence around this frame.
+    target_video, _ = self.frames[target_index].split('/')
     start_index, end_index = get_seq_start_end(target_index,
                                                self.seq_length,
                                                self.sample_every)
     if start_index < 0 or end_index >= self.num_frames:
       return False
-    start_video, _ = self.frames[start_index]
-    end_video, _ = self.frames[end_index]
+    start_video, _ = self.frames[start_index].split('/')
+    end_video, _ = self.frames[end_index].split('/')
     if target_video == start_video and target_video == end_video:
       return True
     return False
+  
+  def load_image_raw(self, frame_video, frame_id):
+    img_file = os.path.join(os.getcwd(), self.dataset_dir, frame_video, frame_id)
+    img = plt.imread(img_file)
+    return img
 
-  def load_image_sequence(self):
+  def load_image_sequence(self, target_index):
+    # Returns a list of images around target index.
+    start_index, end_index = get_seq_start_end(target_index, self.seq_length, self.sample_every)
+    image_seq = []
+    for idx in range(start_index, end_index + 1, self.sample_every):
+        frame_video, frame_id = self.frames[idx].split('/')
+        img = self.load_image_raw(frame_video,frame_id)
+        if idx == target_index:
+            zoom_y = self.img_height / img.shape[0]
+            zoom_x = self.img_width / img.shape[1]
+            img = scipy.misc.imresize(img, (self.img_height, self.img_width))
+            image_seq.append(img)
+    return image_seq, zoom_x, zoom_y
 
-  def load_example(self):
+  def load_example(self, target_index):
+    # Returns a sequence with requested target frame.
+    image_seq, zoom_x, zoom_y = self.load_image_sequence(target_index)
+    target_video, target_filename = self.frames[target_index].split('/')
+    intrinsics = self.load_intrinsics()
+    intrinsics = self.scale_intrinsics(intrinsics, zoom_x, zoom_y)
+    example = {}
+    example['intrinsics'] = intrinsics
+    example['image_seq'] = image_seq
+    example['folder_name'] = target_video
+    example['file_name'] = target_filename.split('.')[0]
+    return example
 
-  def scale_intrinsics(self):
+  def scale_intrinsics(self, mat, sx, sy):
     out = np.copy(mat)
     out[0, 0] *= sx
     out[0, 2] *= sx
@@ -127,7 +162,7 @@ class Bike(object):
     logging.info('video_list: %s', video_list)
     frames = []
     for video in video_list:
-      im_files = glob.glob(os.path.join(self.dataset_dir, video, '*.JPG'))
+      im_files = glob.glob(os.path.join(self.dataset_dir, video, '*.jpg'))
       im_files = sorted(im_files, key=natural_keys)
       # Adding 3 crops of the video.
       frames.extend(['A' + video + '/' + os.path.basename(f) for f in im_files])
@@ -285,15 +320,11 @@ class KittiRaw(object):
           for cam in self.cam_ids:
             img_dir = os.path.join(drive_dir, 'image_' + cam, 'data')
             
-            temp_frames = glob.glob(img_dir + '/*[0-9].JPG')
+            temp_frames = glob.glob(img_dir + '/*[0-9].jpg')
             for frm in temp_frames:
               terms = frm.split('\\')
               frame_id = terms[len(terms) - 1][:-4]
               all_frames.append(dr + ' ' + cam + ' ' + frame_id)
-#            num_frames = len(glob.glob(img_dir + '/*[0-9].JPG'))
-#            for i in range(num_frames):
-#              frame_id = '%.10d' % i
-#              all_frames.append(dr + ' ' + cam + ' ' + frame_id)
 
     for s in self.static_frames:
       try:
@@ -439,7 +470,7 @@ class KittiOdom(object):
     for seq in self.test_seqs:
       seq_dir = os.path.join(self.dataset_dir, 'sequences', '%.2d' % seq)
       img_dir = os.path.join(seq_dir, 'image_2')
-      num_frames = len(glob.glob(os.path.join(img_dir, '*.JPG')))
+      num_frames = len(glob.glob(os.path.join(img_dir, '*.jpg')))
       for n in range(num_frames):
         self.test_frames.append('%.2d %.6d' % (seq, n))
     self.num_test = len(self.test_frames)
@@ -449,7 +480,7 @@ class KittiOdom(object):
     for seq in self.train_seqs:
       seq_dir = os.path.join(self.dataset_dir, 'sequences', '%.2d' % seq)
       img_dir = os.path.join(seq_dir, 'image_2')
-      num_frames = len(glob.glob(img_dir + '/*.JPG'))
+      num_frames = len(glob.glob(img_dir + '/*.jpg'))
       for n in range(num_frames):
         self.train_frames.append('%.2d %.6d' % (seq, n))
     self.num_train = len(self.train_frames)
@@ -505,7 +536,7 @@ class KittiOdom(object):
 
   def load_image(self, drive, frame_id):
     img_file = os.path.join(self.dataset_dir, 'sequences',
-                            '%s/image_2/%s.JPG' % (drive, frame_id))
+                            '%s/image_2/%jpg' % (drive, frame_id))
     img = plt.imread(img_file)
     return img
 

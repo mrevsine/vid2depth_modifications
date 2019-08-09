@@ -153,6 +153,7 @@ class Model(object):
         # Scale image stack.
         height_s = int(self.img_height / (2**s))
         width_s = int(self.img_width / (2**s))
+        print(str(height_s) + " by " + str(width_s))
         self.images[s] = tf.image.resize_area(self.image_stack,
                                               [height_s, width_s])
 

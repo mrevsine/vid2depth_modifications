@@ -44,7 +44,7 @@ gfile = tf.gfile
 FLAGS = flags.FLAGS
 
 DATASETS = [
-    'kitti_raw_eigen', 'kitti_raw_stereo', 'kitti_odom', 'cityscapes', 'bike'
+    'kitti_raw_eigen', 'kitti_raw_stereo', 'kitti_odom', 'cityscapes', 'bike', 'custom'
 ]
 
 flags.DEFINE_enum('dataset_name', None, DATASETS, 'Dataset name.')
@@ -99,6 +99,11 @@ def _generate_data():
                                            img_height=FLAGS.img_height,
                                            img_width=FLAGS.img_width,
                                            seq_length=FLAGS.seq_length)
+  elif FLAGS.dataset_name == 'custom':
+    dataloader = dataset_loader.Custom(FLAGS.dataset_dir,
+                                       img_height = FLAGS.img_height,
+                                       img_width = FLAGS.img_width,
+                                       seq_length = FLAGS.seq_length)
   else:
     raise ValueError('Unknown dataset')
 
@@ -112,6 +117,8 @@ def _generate_data():
     logging.info('Generated: %d', len(all_examples))
 
   all_frames = range(dataloader.num_train)
+# 20 is very arbitrary and definitely subject to change
+  NUM_CHUNKS = len(all_frames) // 20
   frame_chunks = np.array_split(all_frames, NUM_CHUNKS)
 
   manager = multiprocessing.Manager()
