@@ -40,8 +40,10 @@ import os
 from absl import app
 from absl import flags
 from absl import logging
+#edit:
 import matplotlib
 matplotlib.use('TkAgg')
+#end edit
 import matplotlib.pyplot as plt
 import model
 import numpy as np
@@ -98,9 +100,13 @@ def _run_inference():
       im_files = [os.path.join(FLAGS.kitti_dir, f) for f in im_files]
     else:
       video_path = os.path.join(FLAGS.kitti_dir, FLAGS.kitti_video)
-      im_files = gfile.Glob(os.path.join(video_path, '*.png'))
+      #edit
+      #im_files = gfile.Glob(os.path.join(video_path, 'image_02/data', '*.png'))
+      im_files = gfile.Glob(os.path.join(video_path, '*.png')) #delete
+      #end edit
       im_files = [f for f in im_files if 'disp' not in f]
       im_files = sorted(im_files)
+    # regularPictures(im_files, output_dir, inference_model)
     for i in range(0, len(im_files), FLAGS.batch_size):
       if i % 100 == 0:
         logging.info('Generating from %s: %d/%d', ckpt_basename, i,
@@ -112,7 +118,7 @@ def _run_inference():
         idx = i + b
         if idx >= len(im_files):
           break
-        im = scipy.misc.imread(im_files[idx], mode='RGB')
+        im = scipy.misc.imread(im_files[idx], mode='RGB') #added 2nd arg
         inputs[b] = scipy.misc.imresize(im, (FLAGS.img_height, FLAGS.img_width))
       results = inference_model.inference(inputs, sess, mode='depth')
       for b in range(FLAGS.batch_size):
@@ -129,6 +135,7 @@ def _run_inference():
         input_float = inputs[b].astype(np.float32) / 255.0
         vertical_stack = np.concatenate((input_float, colored_map), axis=0)
         scipy.misc.imsave(depth_path, vertical_stack)
+        #edit
         if FLAGS.kitti_video == 'test_files_eigen':
           outPath = os.path.join(og_dir, 'reg_pics', '%03d.png' % idx)
         else:
@@ -136,6 +143,7 @@ def _run_inference():
         tempImg = scipy.misc.imread(im_files[0], mode='RGB')
         resized_colored_map = scipy.misc.imresize(colored_map, (len(tempImg), len(tempImg[0])))
         scipy.misc.imsave(outPath, resized_colored_map)
+        #end edit
 
 
 def _gray2rgb(im, cmap=CMAP):
