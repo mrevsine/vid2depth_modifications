@@ -34,7 +34,7 @@ Create folder kitti-raw-uncompressed in /vid2depth
 Move all raw input data into /vid2depth/kitti-raw-uncompressed  
 Run the following command
 
-cd path/to/vid2depth \\  
+cd path/to/vid2depth    
 python3 dataset/gen_data.py \\  
   --dataset_name kitti_raw_eigen \\  
   --dataset_dir kitti-raw-uncompressed \\  
