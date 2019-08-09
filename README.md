@@ -91,7 +91,7 @@ python3 dataset/gen_data.py \\
   --data_dir data/kitti_raw_eigen \\  
   --seq_length 3
 
-### Train model 
+### Train model (skip if using pre-trained model)
 
 python3 train.py \\  
   --logtostderr \\  
@@ -104,7 +104,7 @@ python3 train.py \\
   --checkpoint_dir checkpoints 
 
 
-USAGE:
+### USAGE:
 
 To get depth maps from images:
 
