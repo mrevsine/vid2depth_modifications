@@ -57,7 +57,7 @@ Parameters kitti_dir and kitti_video are somewhat redundant; the two of them com
 
 Example usage (after creating /PNGs/ folder with input data in /kitti-raw-uncompressed and /out/ folder in /vid2depth/):
 
-cd ~/git/SfM/models/research/vid2depth 
+cd ~/git/SfM/models/research/vid2depth  
 python3 inference.py \\  
     --kitti_dir /kitti-raw-uncompressed \\  
     --output_dir /out \\  
