@@ -107,6 +107,7 @@ python3 train.py \\
 ### USAGE:
 
 To get depth maps from images:
+Create reg_pics/ folder inside of your out directory  
 
 cd path/to/vid2depth  
 python3 inference.py \\  
