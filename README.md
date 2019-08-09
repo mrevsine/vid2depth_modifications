@@ -52,7 +52,6 @@ kitti-raw-uncompressed
 calib_cam_to_cam.txt contains the camera intrinsics for the given video 
 From the original code:  
 "calib_cam_to_cam.txt: Camera-to-camera calibration  
---------------------------------------------------  
 
   - S_xx: 1x2 size of image xx before rectification  
   - K_xx: 3x3 calibration matrix of camera xx before rectification  
