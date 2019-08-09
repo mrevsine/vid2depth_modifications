@@ -117,11 +117,11 @@ python3 inference.py \\
 
 Parameters kitti_dir and kitti_video are somewhat redundant; the two of them combined should make up the pathname to the directory where your data are stored.
 
-Example usage (after creating /PNGs/ folder with input data in /kitti-raw-uncompressed and /out/ folder in /vid2depth/):
+Example usage (after creating /PNGs/ folder with input data in vid2depth/inference_data and /out/ folder in /vid2depth/):
 
 cd ~/git/SfM/models/research/vid2depth  
 python3 inference.py \\  
-    --kitti_dir /kitti-raw-uncompressed \\  
+    --kitti_dir /inference_data \\  
     --output_dir /out \\  
     --kitti_video /PNGs \\  
     --model_ckpt trained-model/model_model-119496/model-119496
