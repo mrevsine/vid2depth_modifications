@@ -23,14 +23,14 @@ scipy         1.1.0
 tensorflow    1.5.0  
 
 
-## TRAINING:
+### TRAINING:
 
 a) Use the included model pre-trained on KITTI and Cityscapes data. This option requires no further action.
 
 b) Train your own model:
     This is more work. 
     
-Format training data:
+### Format training data:
 
 Create folder kitti-raw-uncompressed in /vid2depth  
 Move all raw input data into /vid2depth/kitti-raw-uncompressed  
@@ -90,6 +90,18 @@ python3 dataset/gen_data.py \\
   --dataset_dir kitti-raw-uncompressed \\  
   --data_dir data/kitti_raw_eigen \\  
   --seq_length 3
+
+### Train model 
+
+python3 train.py \\  
+  --logtostderr \\  
+  --data_dir data/kitti-raw-eigen \\  
+  --seq_length 3 \\  
+  --reconstr_weight 0.85 \\  
+  --smooth_weight 0.05 \\  
+  --ssim_weight 0.15 \\  
+  --icp_weight 0 \\  
+  --checkpoint_dir checkpoints 
 
 
 USAGE:
