@@ -39,7 +39,7 @@ b) Train your own model:
 ### Format training data:
 
 Create folder kitti-raw-uncompressed in /vid2depth  
-Move all raw input data into /vid2depth/kitti-raw-uncompressed 
+Move all raw input data into /vid2depth/kitti-raw-uncompressed.   
 Tensorflow only provides dataset loaders for a few well-known datasets so we will try to train our own images by mimicking the KITTI data structures and formats.  
 
 The data structure should appear as follows: 
