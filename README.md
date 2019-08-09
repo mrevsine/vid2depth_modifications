@@ -34,11 +34,11 @@ Create folder kitti-raw-uncompressed in /vid2depth
 Move all raw input data into /vid2depth/kitti-raw-uncompressed  
 Run the following command
 
-cd path/to/vid2depth \
-python3 dataset/gen_data.py \
-  --dataset_name kitti_raw_eigen \
-  --dataset_dir kitti-raw-uncompressed \
-  --data_dir data/kitti_raw_eigen \
+cd path/to/vid2depth \\  
+python3 dataset/gen_data.py \\  
+  --dataset_name kitti_raw_eigen \\  
+  --dataset_dir kitti-raw-uncompressed \\  
+  --data_dir data/kitti_raw_eigen \\  
   --seq_length 3
 
 
@@ -47,10 +47,10 @@ USAGE:
 To get depth maps from images:
 
 cd path/to/vid2depth  
-python3 inference.py \\
-    --kitti_dir /first/half/of/path/to/image/directory \\
-    --output_dir /path/to/where/you/want/outputs/stored \\
-    --kitti_video /second/half/of/path/to/image/directory \\
+python3 inference.py \\  
+    --kitti_dir /first/half/of/path/to/image/directory \\  
+    --output_dir /path/to/where/you/want/outputs/stored \\  
+    --kitti_video /second/half/of/path/to/image/directory \\  
     --model_ckpt /path/to/trained/model
 
 Parameters kitti_dir and kitti_video are somewhat redundant; the two of them combined should make up the pathname to the directory where your data are stored.
@@ -58,8 +58,8 @@ Parameters kitti_dir and kitti_video are somewhat redundant; the two of them com
 Example usage (after creating /PNGs/ folder with input data in /kitti-raw-uncompressed and /out/ folder in /vid2depth/):
 
 cd ~/git/SfM/models/research/vid2depth 
-python3 inference.py \\
-    --kitti_dir /kitti-raw-uncompressed \\
-    --output_dir /out \\
-    --kitti_video /PNGs \\
+python3 inference.py \\  
+    --kitti_dir /kitti-raw-uncompressed \\  
+    --output_dir /out \\  
+    --kitti_video /PNGs \\  
     --model_ckpt trained-model/model_model-119496/model-119496
